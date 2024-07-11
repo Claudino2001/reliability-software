@@ -47,12 +47,6 @@
       <height>21</height>
      </rect>
     </property>
-    <property name="font">
-     <font>
-      <family>Courier New</family>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
    </widget>
    <widget class="QLabel" name="label_Tag">
     <property name="geometry">
@@ -78,7 +72,7 @@
      <rect>
       <x>210</x>
       <y>310</y>
-      <width>131</width>
+      <width>151</width>
       <height>21</height>
      </rect>
     </property>
@@ -100,12 +94,6 @@
       <width>221</width>
       <height>21</height>
      </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Courier New</family>
-      <pointsize>10</pointsize>
-     </font>
     </property>
     <property name="text">
      <string/>
@@ -138,12 +126,6 @@
       <width>381</width>
       <height>91</height>
      </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Courier New</family>
-      <pointsize>10</pointsize>
-     </font>
     </property>
     <property name="cursor" stdset="0">
      <cursorShape>IBeamCursor</cursorShape>
@@ -206,14 +188,8 @@
       <x>370</x>
       <y>270</y>
       <width>121</width>
-      <height>22</height>
+      <height>21</height>
      </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Courier New</family>
-      <pointsize>10</pointsize>
-     </font>
     </property>
     <property name="cursor">
      <cursorShape>PointingHandCursor</cursorShape>

@@ -184,8 +184,7 @@
     </property>
     <property name="font">
      <font>
-      <family>Courier New</family>
-      <pointsize>14</pointsize>
+      <pointsize>12</pointsize>
      </font>
     </property>
    </widget>
@@ -200,8 +199,7 @@
     </property>
     <property name="font">
      <font>
-      <family>Courier New</family>
-      <pointsize>14</pointsize>
+      <pointsize>12</pointsize>
      </font>
     </property>
    </widget>

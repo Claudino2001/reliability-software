@@ -22,11 +22,11 @@ class WindowManager:
         self.current_window = NewProjectView(self)
         self.current_window.load_ui()
 
-    def show_register_view(self):
+    def show_register_view(self, window_title=None):
         if self.current_window:
             self.current_window.close()
         self.current_window = RegisterView(self)
-        self.current_window.load_ui()
+        self.current_window.load_ui(window_title)
 
     def show_adhesion_view(self):
         if self.current_window:
