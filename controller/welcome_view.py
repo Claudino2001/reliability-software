@@ -1,5 +1,5 @@
 # welcome_view.py
-from PyQt5 import uic, QtWidgets
+from PyQt5 import uic, QtWidgets, QtGui
 import os
 
 class WelcomeView:
@@ -11,6 +11,9 @@ class WelcomeView:
         ui_path = "./viewspyqt5/welcome.ui"
         absolute_path = os.path.abspath(ui_path)
         self.welcome_view = uic.loadUi(absolute_path)
+        icon_path = "./imgs/icone.jpg"
+        absolute_icon_path = os.path.abspath(icon_path)
+        self.welcome_view.setWindowIcon(QtGui.QIcon(absolute_icon_path))
         self.welcome_view.setFixedSize(800, 600)
         # Botão criar novo projeto
         self.welcome_view.btnNewProject.clicked.connect(self.manager.show_new_project_view)

@@ -42,7 +42,7 @@
     <property name="geometry">
      <rect>
       <x>550</x>
-      <y>110</y>
+      <y>170</y>
       <width>331</width>
       <height>121</height>
      </rect>
@@ -157,7 +157,7 @@
     <property name="geometry">
      <rect>
       <x>690</x>
-      <y>260</y>
+      <y>320</y>
       <width>111</width>
       <height>31</height>
      </rect>
@@ -172,7 +172,7 @@
     <property name="geometry">
      <rect>
       <x>550</x>
-      <y>260</y>
+      <y>320</y>
       <width>131</width>
       <height>31</height>
      </rect>
@@ -191,7 +191,7 @@
     <property name="geometry">
      <rect>
       <x>810</x>
-      <y>260</y>
+      <y>320</y>
       <width>71</width>
       <height>31</height>
      </rect>
@@ -207,7 +207,7 @@
     <property name="geometry">
      <rect>
       <x>550</x>
-      <y>320</y>
+      <y>380</y>
       <width>331</width>
       <height>31</height>
      </rect>
@@ -252,6 +252,30 @@
     </property>
     <property name="text">
      <string>Exit</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_7">
+    <property name="geometry">
+     <rect>
+      <x>560</x>
+      <y>110</y>
+      <width>321</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Courier New</family>
+      <pointsize>14</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>TAGGGGGGGGGGGGGGGGGGGGG</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
   </widget>

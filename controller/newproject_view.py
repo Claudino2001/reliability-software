@@ -1,5 +1,5 @@
 # newproject_view.py
-from PyQt5 import uic, QtWidgets
+from PyQt5 import uic, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMessageBox
 import os
 
@@ -13,6 +13,10 @@ class NewProjectView:
         ui_path = "./viewspyqt5/newproject.ui"
         absolute_path = os.path.abspath(ui_path)
         self.newproject_view = uic.loadUi(absolute_path)
+        # Carrega o icone da janela
+        icon_path = "./imgs/icone.jpg"
+        absolute_icon_path = os.path.abspath(icon_path)
+        self.newproject_view.setWindowIcon(QtGui.QIcon(absolute_icon_path))
         self.newproject_view.setFixedSize(800, 600)
         # Botão de Voltar
         self.newproject_view.btnBack.clicked.connect(self.btn_voltar)
@@ -25,25 +29,34 @@ class NewProjectView:
     def close(self):
         self.newproject_view.close()
 
-    def btn_voltar(self):
-        resp = QMessageBox.warning(self.newproject_view, 'Attention', 'Are you sure you want to go back?\nFilled data will be lost.', QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-        if resp == QMessageBox.Yes:
-            print("Usuário confirmou a ação de voltar.")
-            self.manager.show_welcome_view()
-        else:
-            print("Usuário cancelou a ação de voltar.")
-
     def btn_criar(self):
         self.coleta_infos()
-        self.manager.show_register_view(self.nome_do_projeto)
+        # Verifica se todos os campos foram devidamente preenchidos antes de prosseguir para a próxima etapa.
+        if self.nome_do_projeto == "" or self.tag == "" or self.desc == "":
+            QMessageBox.warning(self.newproject_view, 'Attention', 'Please make sure to fill in all fields before proceeding.', QMessageBox.Ok)
+        else:
+            self.manager.show_register_view(self.nome_do_projeto)
+
+    def btn_voltar(self):
+        self.coleta_infos()
+        if self.nome_do_projeto != "" or self.tag != "" or self.desc != "":
+            resp = QMessageBox.warning(self.newproject_view, 'Attention', 'Are you sure you want to go back?\nFilled data will be lost.', 
+                                    QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+            if resp == QMessageBox.Yes:
+                print("Usuário confirmou a ação de voltar.")
+                self.manager.show_welcome_view()
+            else:
+                print("Usuário cancelou a ação de voltar.")
+        else:
+            self.manager.show_welcome_view()
 
     def coleta_infos(self):
         # inputProjectName
         self.nome_do_projeto = self.newproject_view.inputProjectName.text()
         # inputTag
-        tag = self.newproject_view.inputTag.text()
+        self.tag = self.newproject_view.inputTag.text()
         # Time unit combobox
-        unidade_de_tempo = self.newproject_view.comboBox.currentText()
+        self.unidade_de_tempo = self.newproject_view.comboBox.currentText()
         # inputDesc
-        desc = self.newproject_view.inputDesc.toPlainText()
-        print(self.nome_do_projeto, tag, unidade_de_tempo, desc)
+        self.desc = self.newproject_view.inputDesc.toPlainText()
+        print(self.nome_do_projeto, self.tag, self.unidade_de_tempo, self.desc)

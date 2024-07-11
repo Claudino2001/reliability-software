@@ -1,4 +1,4 @@
-from PyQt5 import uic, QtWidgets
+from PyQt5 import uic, QtWidgets, QtGui
 import os
 
 class AdhesionView:
@@ -10,6 +10,10 @@ class AdhesionView:
         ui_path = "./viewspyqt5/adhesiontest.ui"
         absolute_path = os.path.abspath(ui_path)
         self.adhesion_view = uic.loadUi(absolute_path)
+        # Carrega o icone da janela
+        icon_path = "./imgs/icone.jpg"
+        absolute_icon_path = os.path.abspath(icon_path)
+        self.adhesion_view.setWindowIcon(QtGui.QIcon(absolute_icon_path))
         self.adhesion_view.setFixedSize(900, 600)
         # Botão de Sair
         self.adhesion_view.btnExit.clicked.connect(self.manager.show_welcome_view)
