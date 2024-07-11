@@ -1,5 +1,7 @@
 from PyQt5 import uic, QtWidgets, QtGui
+from PyQt5.QtWidgets import QPushButton
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
+from PyQt5.QtCore import Qt
 import os
 
 
@@ -8,6 +10,7 @@ class RegisterView:
         self.manager = manager
         self.register_view = None
         self.model = QStandardItemModel()
+        self.setup_header_table()
 
     def load_ui(self, window_title=None):
         ui_path = "./viewspyqt5/dataregister.ui"
@@ -52,7 +55,7 @@ class RegisterView:
 
         self.register_view.show()
     
-    def setup_model(self):
+    def setup_header_table(self):
         self.model.setHorizontalHeaderLabels(['TEF', 'TR', 'Actions'])
 
 
@@ -88,18 +91,34 @@ class RegisterView:
             
             print(f"TEF: {tef_float}, TR: {tr_float}")
 
-            self.insere_tempos_na_tabela(tef_float, tr_float)
+            self.insere_tempos_na_tabela(float(tef), float(tr))
 
-            self.register_view.inputTEF.setText("")
-            self.register_view.inputTR.setText("")
+            self.register_view.inputTEF.clear()
+            self.register_view.inputTR.clear()
         except ValueError:
             # Tratar erro se a conversão falhar
             QtWidgets.QMessageBox.warning(self.register_view, 'Error', 'Please enter valid numbers.')
             return
     
     def insere_tempos_na_tabela(self, tef, tr):
-        row = [QStandardItem(str(tef)), QStandardItem(str(tr))]
-        self.model.appendRow(row)
+        # Cria itens para TEF e TR e configura como não editáveis
+        tef_item = QStandardItem(f"{tef:.2f}")
+        tr_item = QStandardItem(f"{tr:.2f}")
+
+        # Configura os itens como não editáveis
+        tef_item.setFlags(tef_item.flags() & ~Qt.ItemIsEditable)
+        tr_item.setFlags(tr_item.flags() & ~Qt.ItemIsEditable)
+
+        # Cria o botão de exclusão
+        btn_delete = QPushButton('Delete')
+        btn_delete.clicked.connect(lambda: self.remove_row(self.model.indexFromItem(tef_item).row()))
+
+        # Adiciona os itens ao modelo
+        self.model.appendRow([tef_item, tr_item, QStandardItem()])
+        self.register_view.tableView.setIndexWidget(self.model.index(self.model.rowCount() - 1, 2), btn_delete)
+
+    def remove_row(self, row):
+        self.model.removeRow(row)
 
     def close(self):
         self.register_view.close()
