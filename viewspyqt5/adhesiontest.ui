@@ -56,15 +56,15 @@
      </font>
     </property>
     <property name="title">
-     <string>Report</string>
+     <string>Result</string>
     </property>
     <widget class="QLabel" name="label">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>30</y>
+       <y>20</y>
        <width>311</width>
-       <height>16</height>
+       <height>31</height>
       </rect>
      </property>
      <property name="font">
@@ -156,8 +156,8 @@
    <widget class="QLineEdit" name="lineEdit">
     <property name="geometry">
      <rect>
-      <x>680</x>
-      <y>259</y>
+      <x>690</x>
+      <y>260</y>
       <width>111</width>
       <height>31</height>
      </rect>
@@ -174,7 +174,7 @@
      <rect>
       <x>550</x>
       <y>260</y>
-      <width>121</width>
+      <width>131</width>
       <height>31</height>
      </rect>
     </property>
@@ -223,7 +223,7 @@
      <string>Result: X days or Y hours</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btnCancel">
+   <widget class="QPushButton" name="btnSave">
     <property name="geometry">
      <rect>
       <x>780</x>
@@ -236,10 +236,10 @@
      <cursorShape>PointingHandCursor</cursorShape>
     </property>
     <property name="text">
-     <string>Exit</string>
+     <string>Save</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btnCreate">
+   <widget class="QPushButton" name="btnExit">
     <property name="geometry">
      <rect>
       <x>670</x>
@@ -252,7 +252,7 @@
      <cursorShape>PointingHandCursor</cursorShape>
     </property>
     <property name="text">
-     <string>Salvar</string>
+     <string>Exit</string>
     </property>
    </widget>
   </widget>

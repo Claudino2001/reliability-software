@@ -17,7 +17,6 @@ class NewProjectView:
         self.newproject_view.btnBack.clicked.connect(self.manager.show_welcome_view)
         # Botão de Criar
         self.newproject_view.btnCreate.clicked.connect(self.manager.show_register_view)
-
         self.newproject_view.show()
 
     def close(self):

@@ -6,7 +6,7 @@ import qdarktheme
 app = QtWidgets.QApplication([])
 app.setStyleSheet(qdarktheme.load_stylesheet(theme="dark"))
 
-manager = WindowManager()
+manager = WindowManager(app)
 manager.show_welcome_view()
 
 app.exec_()
