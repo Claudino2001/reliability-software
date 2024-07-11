@@ -1,4 +1,5 @@
 from PyQt5 import uic, QtWidgets, QtGui
+from PyQt5.QtGui import QStandardItemModel, QStandardItem
 import os
 
 
@@ -6,6 +7,7 @@ class RegisterView:
     def __init__(self, manager):
         self.manager = manager
         self.register_view = None
+        self.model = QStandardItemModel()
 
     def load_ui(self, window_title=None):
         ui_path = "./viewspyqt5/dataregister.ui"
@@ -17,7 +19,11 @@ class RegisterView:
         absolute_icon_path = os.path.abspath(icon_path)
         self.register_view.setWindowIcon(QtGui.QIcon(absolute_icon_path))
         
+        # Define o tamanho da tela
         self.register_view.setFixedSize(800, 600)
+
+        # Configurar a QTableView
+        self.register_view.tableView.setModel(self.model)
         
         # Insere como título da janela o nome do projeto fornecido na view anterior
         if window_title:
@@ -45,6 +51,10 @@ class RegisterView:
         self.register_view.inputTR.setValidator(double_validator)
 
         self.register_view.show()
+    
+    def setup_model(self):
+        self.model.setHorizontalHeaderLabels(['TEF', 'TR', 'Actions'])
+
 
     def btn_cancel(self):
         ## IMPLEMENTAÇÃO DE SE TEM CERTEZA DE VOLTAR PARA O MENU
@@ -59,18 +69,37 @@ class RegisterView:
         tef = self.register_view.inputTEF.text().replace('.', '').replace(',', '.')
         tr = self.register_view.inputTR.text().replace('.', '').replace(',', '.')
         
+        # Verifica se os campos não estão vazios e não são zero
+        if not tef.strip() or not tr.strip():
+            QtWidgets.QMessageBox.warning(self.register_view, 'Error', 'Fields cannot be empty.')
+            return
+        
         try:
             # Converter para float
             tef_float = float(tef)
             tr_float = float(tr)
+            
+            # Verifica se os valores são diferentes de zero
+            if tef_float == 0 or tr_float == 0:
+                QtWidgets.QMessageBox.warning(self.register_view, 'Error', 'Values cannot be zero.')
+                self.register_view.inputTEF.setText("")
+                self.register_view.inputTR.setText("")
+                return
+            
             print(f"TEF: {tef_float}, TR: {tr_float}")
-            print("Soma: ", tef_float + tr_float)
+
+            self.insere_tempos_na_tabela(tef_float, tr_float)
+
             self.register_view.inputTEF.setText("")
             self.register_view.inputTR.setText("")
         except ValueError:
             # Tratar erro se a conversão falhar
             QtWidgets.QMessageBox.warning(self.register_view, 'Error', 'Please enter valid numbers.')
             return
-        
+    
+    def insere_tempos_na_tabela(self, tef, tr):
+        row = [QStandardItem(str(tef)), QStandardItem(str(tr))]
+        self.model.appendRow(row)
+
     def close(self):
         self.register_view.close()
