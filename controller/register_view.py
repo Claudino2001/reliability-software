@@ -1,5 +1,5 @@
 from PyQt5 import uic, QtWidgets, QtGui
-from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QPushButton, QMessageBox
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from PyQt5.QtCore import Qt
 import os
@@ -52,7 +52,7 @@ class RegisterView:
         self.register_view.btnCancel.clicked.connect(self.btn_cancel)
         
         # Botão de Finalizar. Avançar para a analise de adesão
-        self.register_view.btnFinish.clicked.connect(self.manager.show_adhesion_view)
+        self.register_view.btnFinish.clicked.connect(self.btn_finish)
 
         # Botão para limpar todos os dados da TableView "Clear All"
         self.register_view.btnClearAll.clicked.connect(self.btn_clear_all)
@@ -219,6 +219,17 @@ class RegisterView:
         if self.metadata:
             self.register_view.setWindowTitle(self.metadata.get('project_name', 'Default Title'))
             # Aqui você pode atualizar outros elementos da UI, como labels ou campos de texto, com o `metadata`.
+
+    def btn_finish(self):
+        # Cria uma mensagem de confirmação
+        reply = QMessageBox.question(self.register_view, 'Confirm', 'Are you sure you want to proceed to the adherence test?',
+                                    QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        # Verifica a resposta do usuário
+        if reply == QMessageBox.Yes:
+            print("Usuário confirmou a ação.")
+            self.manager.show_adhesion_view()  # Muda para a tela de teste de aderência
+        else:
+            print("Usuário cancelou a ação.")
 
     def close(self):
         self.register_view.close()
