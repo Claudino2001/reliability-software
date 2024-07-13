@@ -12,6 +12,7 @@ class RegisterView:
         self.model = QStandardItemModel()
         self.setup_header_table()
         self.metadata = {}
+        self.window_title = None
 
     def load_ui(self, window_title=None, metadata=None):
         ui_path = "./viewspyqt5/dataregister.ui"
@@ -32,6 +33,7 @@ class RegisterView:
         # Insere como título da janela o nome do projeto fornecido na view anterior
         if window_title:
             self.register_view.setWindowTitle(window_title)
+            self.window_title = window_title
 
         # Verifica se pessou corretamente
         if metadata:
@@ -144,6 +146,9 @@ class RegisterView:
         try:
             with open(csv_path, newline='', encoding='utf-8') as csvfile:
                 reader = csv.reader(csvfile)
+
+                # Ler o nome do projeto
+                self.metadata['project_name'] = self.window_title
 
                 # Processa a primeira linha - Tag
                 self.metadata['tag'] = next(reader)[0].split(':')[-1].strip()
