@@ -227,7 +227,7 @@ class RegisterView:
         # Verifica a resposta do usuário
         if reply == QMessageBox.Yes:
             print("Usuário confirmou a ação.")
-            self.manager.show_adhesion_view()  # Muda para a tela de teste de aderência
+            self.manager.show_adhesion_view(metadata=self.metadata, model=self.model) # Muda para a tela de teste de aderência
         else:
             print("Usuário cancelou a ação.")
 

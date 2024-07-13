@@ -30,11 +30,11 @@ class WindowManager:
         if csv_path:
             self.current_window.load_csv_data(csv_path)
 
-    def show_adhesion_view(self):
+    def show_adhesion_view(self, metadata=None, model=None):
         if self.current_window:
             self.current_window.close()
         self.current_window = AdhesionView(self)
-        self.current_window.load_ui()
+        self.current_window.load_ui(metadata, model)
 
     def quit_application(self):
         self.app.quit()
