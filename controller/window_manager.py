@@ -22,11 +22,13 @@ class WindowManager:
         self.current_window = NewProjectView(self)
         self.current_window.load_ui()
 
-    def show_register_view(self, window_title=None):
+    def show_register_view(self, window_title=None, csv_path=None, metadata=None):
         if self.current_window:
             self.current_window.close()
         self.current_window = RegisterView(self)
-        self.current_window.load_ui(window_title)
+        self.current_window.load_ui(window_title, metadata)
+        if csv_path:
+            self.current_window.load_csv_data(csv_path)
 
     def show_adhesion_view(self):
         if self.current_window:

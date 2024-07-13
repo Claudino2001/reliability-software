@@ -8,6 +8,7 @@ class NewProjectView:
     def __init__(self, manager):
         self.manager = manager
         self.newproject_view = None
+        self.metadata = {'project_name': None,'tag': None, 'time_unit': None, 'description': None}
 
     def load_ui(self):
         ui_path = "./viewspyqt5/newproject.ui"
@@ -28,14 +29,14 @@ class NewProjectView:
 
     def close(self):
         self.newproject_view.close()
-
+    
     def btn_criar(self):
-        self.coleta_infos()
         # Verifica se todos os campos foram devidamente preenchidos antes de prosseguir para a próxima etapa.
-        if self.nome_do_projeto == "" or self.tag == "" or self.desc == "":
+        self.coleta_infos()
+        if not (self.metadata['project_name'] and self.metadata['tag'] and self.metadata['description']):
             QMessageBox.warning(self.newproject_view, 'Attention', 'Please make sure to fill in all fields before proceeding.', QMessageBox.Ok)
         else:
-            self.manager.show_register_view(self.nome_do_projeto)
+            self.manager.show_register_view(self.metadata['project_name'], None, self.metadata)
 
     def btn_voltar(self):
         self.coleta_infos()
@@ -53,10 +54,16 @@ class NewProjectView:
     def coleta_infos(self):
         # inputProjectName
         self.nome_do_projeto = self.newproject_view.inputProjectName.text()
+        self.metadata['project_name'] = self.nome_do_projeto
         # inputTag
         self.tag = self.newproject_view.inputTag.text()
+        self.metadata['tag'] = self.tag
         # Time unit combobox
         self.unidade_de_tempo = self.newproject_view.comboBox.currentText()
+        self.metadata['time_unit'] = self.unidade_de_tempo
         # inputDesc
         self.desc = self.newproject_view.inputDesc.toPlainText()
-        print(self.nome_do_projeto, self.tag, self.unidade_de_tempo, self.desc)
+        self.metadata['description'] = self.desc
+        #print(f'Novo projeto criado com sucesso.\n\tProject name: {self.nome_do_projeto}\n\tTag: {self.tag}\n\tTime unit: {self.unidade_de_tempo}\n\tDescription:{self.desc}')
+        print(self.metadata)
+
