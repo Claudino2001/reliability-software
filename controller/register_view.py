@@ -6,10 +6,10 @@ import os
 import csv
 
 class RegisterView:
-    def __init__(self, manager):
+    def __init__(self, manager, model):
         self.manager = manager
         self.register_view = None
-        self.model = QStandardItemModel()
+        self.model = model
         self.setup_header_table()
         self.metadata = {}
         self.window_title = None
@@ -69,6 +69,7 @@ class RegisterView:
         self.register_view.inputTR.setValidator(double_validator)
 
         self.register_view.show()
+        self.reconstruir_widgets_de_acoes()
     
     def setup_header_table(self):
         self.model.setHorizontalHeaderLabels(['TEF', 'TR', 'Actions'])
@@ -76,9 +77,8 @@ class RegisterView:
     def btn_clear_all(self):
         # Limpa todos os itens do modelo
         self.model.clear()
-
-        # Redefine os cabeçalhos da tabela após limpar
         self.setup_header_table()
+        self.reconstruir_widgets_de_acoes()
 
     def btn_cancel(self):
         ## IMPLEMENTAÇÃO DE SE TEM CERTEZA DE VOLTAR PARA O MENU
@@ -130,22 +130,25 @@ class RegisterView:
         tef_item.setFlags(tef_item.flags() & ~Qt.ItemIsEditable)
         tr_item.setFlags(tr_item.flags() & ~Qt.ItemIsEditable)
 
-        # Cria o botão de exclusão
-        btn_delete = QPushButton('Delete')
-        btn_delete.clicked.connect(lambda: self.remove_row(self.model.indexFromItem(tef_item).row()))
-
         # Adiciona os itens ao modelo
         self.model.appendRow([tef_item, tr_item, QStandardItem()])
-        self.register_view.tableView.setIndexWidget(self.model.index(self.model.rowCount() - 1, 2), btn_delete)
+
+        # Adiciona o botão de exclusão na última linha adicionada
+        self.reconstruir_widgets_de_acoes()
 
     def remove_row(self, row):
         self.model.removeRow(row)
-    
+        self.recreate_delete_buttons()  # Chama a reconstrução dos botões após a exclusão
+
     def load_csv_data(self, csv_path):
         print(f"Loading CSV Data, instance ID: {id(self)}")
         try:
             with open(csv_path, newline='', encoding='utf-8') as csvfile:
                 reader = csv.reader(csvfile)
+
+                # Limpa os possiveis dados antigos
+                self.model.clear()
+                self.setup_header_table()  # Reconfigura os cabeçalhos após limpar
 
                 # Ler o nome do projeto
                 self.metadata['project_name'] = self.window_title
@@ -167,6 +170,7 @@ class RegisterView:
                     if row:  # Verifica se a linha não está vazia
                         tef, tr = map(float, row[:2])  # Assume que TEF e TR são as duas primeiras colunas
                         self.insere_tempos_na_tabela(tef, tr)
+                self.reconstruir_widgets_de_acoes()     # Reconstrói os widgets depois de carregar dados
         except Exception as e:
             self.register_view.setWindowTitle('Error')
             QtWidgets.QMessageBox.critical(self.register_view, 'Error', 
@@ -230,6 +234,21 @@ class RegisterView:
             self.manager.show_adhesion_view(metadata=self.metadata, model=self.model) # Muda para a tela de teste de aderência
         else:
             print("Usuário cancelou a ação.")
+
+    def reconstruir_widgets_de_acoes(self):
+        for row in range(self.model.rowCount()):
+            btn_delete = QPushButton('Delete')
+            btn_delete.clicked.connect(lambda ch, row=row: self.remove_row(row))
+            self.register_view.tableView.setIndexWidget(self.model.index(row, 2), btn_delete)
+
+    def recreate_delete_buttons(self):
+        # Remove os botões antigos e recria novos para cada linha restante
+        for row in range(self.model.rowCount()):
+            btn_delete = QPushButton('Delete')
+            btn_delete.clicked.connect(lambda ch, row=row: self.remove_row(row))
+            self.register_view.tableView.setIndexWidget(self.model.index(row, 2), btn_delete)
+
+        print("Recreated delete buttons for all rows.")
 
     def close(self):
         self.register_view.close()
