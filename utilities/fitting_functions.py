@@ -104,21 +104,19 @@ def compare_distributions(fail_times, tbf_unit):
 
     # Determinar a melhor distribuição com base na pontuação
     best_distribution = "Weibull" if score_wb > score_lognorm else "Lognormal"
-    print(
-        f"A distribuição com maior aderência é: {best_distribution} (Weibull: {score_wb}, Lognormal: {score_lognorm})"
-    )
+    print(f"A distribuição com maior aderência é: {best_distribution} (Weibull: {score_wb}, Lognormal:{score_lognorm})")
 
-    # Plotar o gráfico de confiabilidade para a distribuição escolhida
+    # Dados da distribuição escolhida
     if best_distribution == "Weibull":
         dist = Fit_Weibull_2P(
             failures=fail_times,
+            CI=0.90,
+            CI_type="time",
+            method="MLE",
             right_censored=None,
             show_probability_plot=None,
             print_results=None,
-            CI=0.90,
             quantiles=None,
-            CI_type="time",
-            method="MLE",
             optimizer=None,
             force_beta=None,
             downsample_scatterplot=True,
@@ -126,26 +124,34 @@ def compare_distributions(fail_times, tbf_unit):
     else:
         dist = Fit_Lognormal_2P(
             failures=fail_times,
+            CI=0.90,
+            CI_type="time",
+            method="MLE",
             right_censored=None,
             show_probability_plot=None,
             print_results=None,
-            CI=0.90,
             quantiles=None,
             optimizer=None,
-            CI_type="time",
-            method="MLE",
             force_sigma=None,
             downsample_scatterplot=None,
         )
 
+    return dist, best_distribution
+
+def plot_reliability_graph(dist, fail_times, tbf_unit):
+    """
+    Plota o gráfico de confiabilidade para a distribuição escolhida.
+    """
     times = np.linspace(min(fail_times), max(fail_times), 1000)
     reliability = 1 - dist.distribution.CDF(times)
 
     plt.figure(figsize=(8, 6))
-    plt.plot(times, reliability, label=best_distribution)
+    plt.plot(times, reliability, label=dist.name)
     plt.xlabel(f"Tempo ({tbf_unit})")
     plt.ylabel("Confiabilidade em decimal com valores de 0 a 1")
-    plt.title(f"Gráfico de Confiabilidade para Distribuição {best_distribution}")
-    plt.savefig(resource_path("best_distribution.png"))
-
-    return dist, best_distribution
+    plt.title(f"Gráfico de Confiabilidade para Distribuição {dist.name}") # plt.title(f"Gráfico de Confiabilidade para Distribuição {best_distribution}")
+    plt.legend()
+    plt.grid(True)
+    plt.savefig(resource_path(f"{dist.name}_distribution.png"))
+    plt.show()
+    return None

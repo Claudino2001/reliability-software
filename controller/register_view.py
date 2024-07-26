@@ -1,4 +1,4 @@
-from PyQt5 import uic, QtWidgets, QtGui
+from PyQt5 import uic, QtWidgets, QtGui, QtCore
 from PyQt5.QtWidgets import QPushButton, QMessageBox
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from PyQt5.QtCore import Qt
@@ -41,6 +41,8 @@ class RegisterView:
             print(f"Metadata received: {self.metadata}")
             self.update_ui_with_metadata()
         
+        self.foco_e_tabulacao()
+
         # Hit QtLineEdit - Configurar os placeholder texts
         self.register_view.inputTEF.setPlaceholderText("e.g., 10,30")
         self.register_view.inputTR.setPlaceholderText("e.g., 0,50")
@@ -249,6 +251,31 @@ class RegisterView:
             self.register_view.tableView.setIndexWidget(self.model.index(row, 2), btn_delete)
 
         print("Recreated delete buttons for all rows.")
+
+    def foco_e_tabulacao(self):
+        # MUDEI DE IDEIA
+        # QUERO QUE O TAB FIQUE TRANSITANDO ENTRE inputTEF E inputTR.
+        # INSIRO UMA INFO EM inputTEF APERTO TAB INSIRO UMA INFO EM inputTR APERTO ENTRER E O FOCO RETORNA PARA inputTEF E ASSIM EU REPITO O PROCESSO QUANTAS VEZES FOREM NECESSÁRIAS.
+        # Encontrar widgets pela propriedade 'objectName' definida no arquivo .ui
+        self.inputTEF = self.register_view.findChild(QtWidgets.QLineEdit, 'inputTEF')
+        self.inputTR = self.register_view.findChild(QtWidgets.QLineEdit, 'inputTR')
+        self.btnRegister = self.register_view.findChild(QtWidgets.QPushButton, 'btnRegister')
+
+        # Definir foco inicial no primeiro campo de entrada
+        self.inputTEF.setFocus()
+
+        # Definir ordem de tabulação para alternar entre inputTEF e inputTR
+        self.register_view.setTabOrder(self.inputTEF, self.inputTR)
+        self.register_view.setTabOrder(self.inputTR, self.inputTEF)
+
+        # Configurar Enter para pressionar o botão Register usando QShortcut
+        enter_shortcut = QtWidgets.QShortcut(QtCore.Qt.Key_Return, self.register_view)
+        enter_shortcut.activated.connect(self.handle_enter_key)
+    
+    def handle_enter_key(self):
+        # Pressionar o botão Register e retornar o foco para inputTEF
+        self.btnRegister.click()
+        self.inputTEF.setFocus()
 
     def close(self):
         self.register_view.close()

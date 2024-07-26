@@ -25,6 +25,25 @@ class NewProjectView:
         self.newproject_view.btnCreate.clicked.connect(self.btn_criar)
         # Combo box
         self.newproject_view.comboBox.addItems(["days", "hours"])
+
+        # Definindo foco e ordem de tabulação
+        self.inputProjectName = self.newproject_view.findChild(QtWidgets.QLineEdit, 'inputProjectName')
+        self.inputTag = self.newproject_view.findChild(QtWidgets.QLineEdit, 'inputTag')
+        self.comboBox = self.newproject_view.findChild(QtWidgets.QComboBox, 'comboBox')
+        self.inputDesc = self.newproject_view.findChild(QtWidgets.QLineEdit, 'inputDesc')
+        self.btnCreate = self.newproject_view.findChild(QtWidgets.QPushButton, 'btnCreate')
+        self.btnBack = self.newproject_view.findChild(QtWidgets.QPushButton, 'btnBack')
+
+        # Definir foco inicial
+        self.inputProjectName.setFocus()
+
+        # Definir ordem de tabulação no contexto de self.newproject_view
+        self.newproject_view.setTabOrder(self.inputProjectName, self.inputTag)
+        self.newproject_view.setTabOrder(self.inputTag, self.comboBox)
+        self.newproject_view.setTabOrder(self.comboBox, self.inputDesc)
+        self.newproject_view.setTabOrder(self.inputDesc, self.btnCreate)
+        self.newproject_view.setTabOrder(self.btnCreate, self.btnBack)
+
         self.newproject_view.show()
 
     def close(self):
